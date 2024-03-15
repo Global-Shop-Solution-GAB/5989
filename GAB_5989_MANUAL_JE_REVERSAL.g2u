@@ -1,0 +1,447 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.F_JE_Reversal..create
+Gui.F_JE_Reversal..caption("Manual Journal Reversal [APAC]")
+Gui.F_JE_Reversal..size(13500,6375)
+Gui.F_JE_Reversal..minx(0)
+Gui.F_JE_Reversal..miny(0)
+Gui.F_JE_Reversal..position(0,0)
+Gui.F_JE_Reversal..event(UnLoad,f_je_reversal_unload)
+Gui.F_JE_Reversal..fontsize(9)
+Gui.F_JE_Reversal..forecolor(0)
+Gui.F_JE_Reversal..fontstyle(False,False,False,False)
+Gui.F_JE_Reversal..BackColor(-2147483633)
+Gui.F_JE_Reversal..mousepointer(0)
+Gui.F_JE_Reversal..sizeable(False)
+Gui.F_JE_Reversal.lbl1.create(label,"Batch No.",True,1050,255,1,155,95,True,0,Arial,9,-2147483633,0)
+Gui.F_JE_Reversal.lbl1.defaultvalue("")
+Gui.F_JE_Reversal.txt_BatchNo.create(textbox,"",True,855,300,0,145,330,False,0,Arial,9,-2147483643,1)
+Gui.F_JE_Reversal.txt_BatchNo.defaultvalue("")
+Gui.F_JE_Reversal.cmd_Browse.create(button)
+Gui.F_JE_Reversal.cmd_Browse.caption("^")
+Gui.F_JE_Reversal.cmd_Browse.size(450,375)
+Gui.F_JE_Reversal.cmd_Browse.position(1110,260)
+Gui.F_JE_Reversal.cmd_Browse.fontsize(9)
+Gui.F_JE_Reversal.cmd_Browse.event(Click,cmd_browse_click)
+Gui.F_JE_Reversal.cmd_Browse.defaultvalue("")
+Gui.F_JE_Reversal.lbl2.create(label,"Reference",True,1935,255,1,1955,90,True,0,Arial,9,-2147483633,0)
+Gui.F_JE_Reversal.lbl2.defaultvalue("")
+Gui.F_JE_Reversal.txt_BatchRef.create(textbox,"",True,2520,315,0,1930,325,False,0,Arial,9,-2147483643,1)
+Gui.F_JE_Reversal.txt_BatchRef.defaultvalue("")
+Gui.F_JE_Reversal.lbl3.create(label,"Post Date",True,1935,255,1,4800,85,True,0,Arial,9,-2147483633,0)
+Gui.F_JE_Reversal.lbl3.defaultvalue("")
+Gui.F_JE_Reversal.lbl4.create(label,"Reversal Remark",True,1935,255,1,160,780,True,0,Arial,9,-2147483633,0)
+Gui.F_JE_Reversal.lbl4.defaultvalue("")
+Gui.F_JE_Reversal.txt_Remark.create(textbox,"",True,4290,300,0,2870,1040,True,0,Arial,9,-2147483643,1)
+Gui.F_JE_Reversal.txt_Remark.maxLength(30)
+Gui.F_JE_Reversal.txt_Remark.defaultvalue("")
+Gui.F_JE_Reversal.cmd_Process.create(button)
+Gui.F_JE_Reversal.cmd_Process.caption("Process")
+Gui.F_JE_Reversal.cmd_Process.size(1485,465)
+Gui.F_JE_Reversal.cmd_Process.position(7365,150)
+Gui.F_JE_Reversal.cmd_Process.fontsize(9)
+Gui.F_JE_Reversal.cmd_Process.event(Click,cmd_process_click)
+Gui.F_JE_Reversal.cmd_Process.defaultvalue("")
+Gui.F_JE_Reversal.lbl5.create(label,"Batch Summary",True,1935,255,1,175,1470,True,0,Arial,9,-2147483633,0)
+Gui.F_JE_Reversal.lbl5.defaultvalue("")
+Gui.F_JE_Reversal.dlst_remark.create(dropdownlist)
+Gui.F_JE_Reversal.dlst_remark.size(2535,330)
+Gui.F_JE_Reversal.dlst_remark.position(155,1020)
+Gui.F_JE_Reversal.dlst_remark.fontsize(9)
+Gui.F_JE_Reversal.dlst_remark.event(Click,dlst_remark_click)
+Gui.F_JE_Reversal.dlst_remark.defaultvalue("")
+Gui.F_JE_Reversal.lbl6.create(label,"Other Remark",True,1935,255,1,2850,800,True,0,Arial,9,-2147483633,0)
+Gui.F_JE_Reversal.lbl6.defaultvalue("")
+Gui.F_JE_Reversal.dtpPostDate.create(datepicker)
+Gui.F_JE_Reversal.dtpPostDate.size(1620,285)
+Gui.F_JE_Reversal.dtpPostDate.position(7345,1030)
+Gui.F_JE_Reversal.dtpPostDate.defaultvalue("")
+Gui.F_JE_Reversal.lbl7.create(label,"Reversal Post Date",True,1935,255,1,7345,800,True,0,Arial,9,-2147483633,0)
+Gui.F_JE_Reversal.lbl7.defaultvalue("")
+Gui.F_JE_Reversal.GsGCBatch.Create(GsGridControl)
+Gui.F_JE_Reversal.GsGCBatch.Size(13065,4035)
+Gui.F_JE_Reversal.GsGCBatch.Position(150,1695)
+Gui.F_JE_Reversal.dtpOPostDate.Create(DatePicker)
+Gui.F_JE_Reversal.dtpOPostDate.Size(1965,285)
+Gui.F_JE_Reversal.dtpOPostDate.Position(4845,345)
+Gui.F_JE_Reversal.dtpOPostDate.Enabled(False)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+Variable.UDT.uBatch.Define("GL_ACCOUNT",String,GL_ACCOUNT)
+Variable.UDT.uBatch.Define("GL_DESC",String)
+Variable.UDT.uBatch.Define("JE_DESC",String,DESCR)
+Variable.UDT.uBatch.Define("AMOUNT",Float,AMOUNT)
+Variable.UDT.uBatch.Define("DEBIT",Float)
+Variable.UDT.uBatch.Define("CREDIT",Float)
+Variable.UDT.uBatch.Define("VOUCHER",String,VOUCHER)
+Variable.UDT.uBatch.Define("EXCH_CURR",String,EXCH_CURR)
+Variable.UDT.uBatch.Define("EXCH_DATE",String,EXCH_DATE)
+Variable.UDT.uBatch.Define("EXCH_RATE",Float,EXCH_RATE)
+Variable.UDT.uBatch.Define("EXCH_AMT",Float,EXCH_AMT)
+Variable.UDT.uBatch.Define("LINE",String,BATCH_LINE)
+Variable.uGlobal.uBatch.Declare("uBatch")
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+V.Local.sIconPath.Declare(String)
+V.Local.sLabel.Declare(String)
+
+F.Intrinsic.String.Concat(V.Caller.GlobalDir,"\ART\gss2.ico",V.Local.sIconPath)
+Gui.F_JE_Reversal..Icon(V.Local.sIconPath)
+
+F.ODBC.Connection!conx.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+
+'F.Intrinsic.Control.CallSub(Gsflexgrid1_style)
+
+F.Data.Dictionary.CreateFromSQL("dicCOA","conx","select gl_account, descr from v_gl_master")
+F.Data.Dictionary.SetDefaultReturn("dicCOA","")
+
+Gui.F_JE_Reversal.dlst_remark.AddItem("Reversal")
+Gui.F_JE_Reversal.dlst_remark.AddItem("Correction")
+Gui.F_JE_Reversal.dlst_remark.AddItem("Other")
+Gui.F_JE_Reversal.dlst_remark.Text("Reversal")
+
+Gui.F_JE_Reversal.lbl6.Visible(False)
+Gui.F_JE_Reversal.txt_Remark.Visible(False)
+Gui.F_JE_Reversal.GsGCBatch.Anchor(15)
+
+Gui.F_JE_Reversal..Show
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GAB_MANUAL_JE_REVERSAL.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Main.End
+
+Program.Sub.f_je_reversal_unload.Start
+F.Intrinsic.Control.SetErrorHandler("f_je_reversal_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+F.Intrinsic.Control.If(V.DataTable.dtBatch.Exists)
+	F.Data.DataTable.Close("dtBatch")
+F.Intrinsic.Control.EndIf
+F.Data.Dictionary.Close("dicCOA")
+F.ODBC.Connection!conx.Close
+F.Intrinsic.Control.End
+
+F.Intrinsic.Control.Label("f_je_reversal_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GAB_MANUAL_JE_REVERSAL.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.f_je_reversal_unload.End
+
+Program.Sub.gsflexgrid1_style.Start
+F.Intrinsic.Control.SetErrorHandler("gsflexgrid1_style_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+V.Local.i1.Declare(Long)
+
+V.Local.sTitles.Declare(String)
+
+V.Local.sTitles.Set("GL Account*!*GL Account Description*!*Journal Description*!*Debit Amount*!*Credit Amount")
+F.Intrinsic.String.Split(V.Local.sTitles,"*!*",V.Local.sTitles)
+
+Gui.F_JE_Reversal.gsflexgrid1.Cols(5)
+Gui.F_JE_Reversal.gsflexgrid1.Rows(2)
+Gui.F_JE_Reversal.gsflexgrid1.FixedRows(1)
+
+F.Intrinsic.Control.For(V.Local.i1,0,V.Local.sTitles.UBound,1)
+	Gui.F_JE_Reversal.gsflexgrid1.TextMatrix(V.Local.i1,0,V.Local.sTitles(V.Local.i1))
+	Gui.F_JE_Reversal.gsflexgrid1.BuildStyle(1,V.Local.i1,"Type","Locked",True)
+	Gui.F_JE_Reversal.gsflexgrid1.BuildStyle(1,V.Local.i1,"Fontstyle","Bold",True)
+	Gui.F_JE_Reversal.gsflexgrid1.BuildStyle(1,V.Local.i1,"Format","Alignment",4)
+	Gui.F_JE_Reversal.gsflexgrid1.BuildStyle(1,V.Local.i1,"Fontstyle","Size",9)
+	Gui.F_JE_Reversal.gsflexgrid1.BuildStyle(2,V.Local.i1,"Fontstyle","Size",9)
+	Gui.F_JE_Reversal.gsflexgrid1.BuildStyle(2,V.Local.i1,"Type","Locked",True)
+F.Intrinsic.Control.Next(V.Local.i1)
+
+Gui.F_JE_Reversal.gsflexgrid1.BuildStyle(2,0,"Format","Alignment",2)
+Gui.F_JE_Reversal.gsflexgrid1.BuildStyle(2,1,"Format","Alignment",2)
+Gui.F_JE_Reversal.gsflexgrid1.BuildStyle(2,2,"Format","Alignment",2)
+Gui.F_JE_Reversal.gsflexgrid1.BuildStyle(2,3,"Format","Alignment",6)
+Gui.F_JE_Reversal.gsflexgrid1.BuildStyle(2,4,"Format","Alignment",6)
+
+Gui.F_JE_Reversal.gsflexgrid1.BuildStyle(2,3,"Format","Mask","#,0.00")
+Gui.F_JE_Reversal.gsflexgrid1.BuildStyle(2,4,"Format","Mask","#,0.00")
+
+Gui.F_JE_Reversal.gsflexgrid1.ColWidth(0,1800)
+Gui.F_JE_Reversal.gsflexgrid1.ColWidth(1,3500)
+Gui.F_JE_Reversal.gsflexgrid1.ColWidth(2,3500)
+Gui.F_JE_Reversal.gsflexgrid1.ColWidth(3,2000)
+Gui.F_JE_Reversal.gsflexgrid1.ColWidth(4,2000)
+
+Gui.F_JE_Reversal.gsflexgrid1.ApplyStyle(0,1)
+
+F.Intrinsic.Control.Label("gsflexgrid1_style_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GAB_MANUAL_JE_REVERSAL.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.gsflexgrid1_style.End
+
+Program.Sub.cmd_browse_click.Start
+F.Intrinsic.Control.SetErrorHandler("cmd_browse_click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+V.Local.fAmt.Declare(Float)
+
+V.Local.i1.Declare(Long)
+V.Local.iWidths.Declare(Long)
+
+V.Local.sCurYear.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.sRet.Declare(String)
+V.Local.sTitles.Declare(String)
+V.Local.sYear.Declare(String)
+
+F.Intrinsic.String.Split("Batch No.*!*Post Date*!*Reference*!*Voucher*!*Description","*!*",V.Local.sTitles)
+F.Intrinsic.String.Split("1000*!*1000*!*1800*!*800*!*3000","*!*",V.Local.iWidths)
+
+F.Intrinsic.String.Format(V.Ambient.Date,"YYYY",V.Local.sYear)
+F.Intrinsic.String.Concat(V.Local.sYear,"-01-01",V.Local.sCurYear)
+V.Local.sQuery.Set("select distinct batch, post_date_sql, reference, voucher, description from v_gl_journal_dtl where (batch like 'J%' or batch like 'D%' or batch like 'E%') and reverse_date = '00000000' and reference not like 'REVERSAL%' ORDER BY BATCH")
+
+F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+F.Intrinsic.UI.Browser("Select a Batch Number","conx",V.Local.sQuery,V.Local.sTitles,V.Local.iWidths,V.Local.sRet)
+
+F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+	F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	Gui.F_JE_Reversal.txt_BatchNo.Text(V.Local.sRet(0).Trim)
+	Gui.F_JE_Reversal.txt_BatchRef.Text(V.Local.sRet(2).Trim)
+	Gui.F_JE_Reversal.dtpOPostDate.Value(V.Local.sRet(1))
+	
+	F.Intrinsic.Control.If(V.DataTable.dtBatch.Exists)
+		F.Data.DataTable.Close("dtBatch")
+	F.Intrinsic.Control.EndIf
+	
+	'Get GL account description
+	F.Intrinsic.String.Build("select line as Line, gl_number as GLAccount, ' ' as GLDesc, description as JEDesc, amount_cmpny as Amount from v_gl_journal_dtl where batch = '{0}' order by line",V.Local.sRet(0).trim,V.Local.sQuery)
+	F.Data.DataTable.CreateFromSQL("dtBatch","conx",V.Local.sQuery,True)
+	F.Data.DataTable.AddExpressionColumn("dtBatch","Debit","Float","IIF(Amount>=0,Amount,0)")
+	F.Data.DataTable.AddExpressionColumn("dtBatch","Credit","Float","IIF(Amount<0,-1*Amount,0)")
+	F.Data.DataTable.FillFromDictionary("dtBatch","dicCOA","GLAccount","GLDesc")
+	
+	Gui.F_JE_Reversal.GsGCBatch.AddGridviewFromDatatable("gvBatch","dtBatch")
+	Gui.F_JE_Reversal.GsGCBatch.MainView("gvBatch")
+	Gui.F_JE_Reversal.GsGCBatch.SetColumnProperty("gvBatch","Amount","Visible",False)
+	Gui.F_JE_Reversal.GsGCBatch.SetColumnProperty("gvBatch","Line","HeaderHAlignment","Center")
+	Gui.F_JE_Reversal.GsGCBatch.SetColumnProperty("gvBatch","GLAccount","HeaderHAlignment","Center")
+	Gui.F_JE_Reversal.GsGCBatch.SetColumnProperty("gvBatch","GLDesc","HeaderHAlignment","Center")
+	Gui.F_JE_Reversal.GsGCBatch.SetColumnProperty("gvBatch","JEDesc","HeaderHAlignment","Center")
+	Gui.F_JE_Reversal.GsGCBatch.SetColumnProperty("gvBatch","Debit","HeaderHAlignment","Center")
+	Gui.F_JE_Reversal.GsGCBatch.SetColumnProperty("gvBatch","Credit","HeaderHAlignment","Center")
+	Gui.F_JE_Reversal.GsGCBatch.SetColumnProperty("gvBatch","Line","CellHAlignment","Center")
+	Gui.F_JE_Reversal.GsGCBatch.SetColumnProperty("gvBatch","GLAccount","Caption","GL Account")
+	Gui.F_JE_Reversal.GsGCBatch.SetColumnProperty("gvBatch","GLDesc","Caption","Account Description")
+	Gui.F_JE_Reversal.GsGCBatch.SetColumnProperty("gvBatch","JEDesc","Caption","Journal Description")
+	Gui.F_JE_Reversal.GsGCBatch.SetColumnProperty("gvBatch","Line","MinWidth","50")
+	Gui.F_JE_Reversal.GsGCBatch.SetColumnProperty("gvBatch","GLAccount","MinWidth","100")
+	Gui.F_JE_Reversal.GsGCBatch.SetColumnProperty("gvBatch","GLDesc","MinWidth","150")
+	Gui.F_JE_Reversal.GsGCBatch.SetColumnProperty("gvBatch","JEDesc","MinWidth","250")
+	Gui.F_JE_Reversal.GsGCBatch.SetColumnProperty("gvBatch","Debit","MinWidth","130")
+	Gui.F_JE_Reversal.GsGCBatch.SetColumnProperty("gvBatch","Credit","MinWidth","130")
+	Gui.F_JE_Reversal.GsGCBatch.SetColumnProperty("gvBatch","Debit","DisplayCustomNumeric","###,###,###,##0.00")
+	Gui.F_JE_Reversal.GsGCBatch.SetColumnProperty("gvBatch","Credit","DisplayCustomNumeric","###,###,###,##0.00")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.Label("cmd_browse_click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GAB_MANUAL_JE_REVERSAL.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.cmd_browse_click.End
+
+Program.Sub.cmd_process_click.Start
+F.Intrinsic.Control.SetErrorHandler("cmd_process_click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+V.Local.fAmt.Declare(Float)
+
+V.Local.i1.Declare(Long)
+
+V.Local.datePost.Declare
+V.Local.sBatch.Declare(String)
+V.Local.sCoCurr.Declare(String)
+V.Local.sDate.Declare(String)
+V.Local.sDesc.Declare(String)
+V.Local.sField.Declare(String)
+V.Local.sFile.Declare(String)
+V.Local.sFileName.Declare(String)
+V.Local.sFileRow.Declare(String)
+V.Local.sJECurr.Declare(String)
+V.Local.sMessage.Declare(String)
+V.Local.sMonth.Declare(String)
+V.Local.sParam.Declare(String)
+V.Local.sPostDate.Declare(String)
+V.Local.sQuery.Declare(String)
+V.Local.sRemark.Declare(String)
+V.Local.sSelection.Declare(String)
+V.Local.sRet.Declare(String)
+V.Local.sUser.Declare(String)
+V.Local.sYear.Declare(String)
+
+V.Local.sBatch.Set(V.Screen.F_JE_Reversal!txt_BatchNo.Text)
+V.Local.sSelection.Set(V.Screen.F_JE_Reversal!dlst_remark.Text)
+
+F.Intrinsic.Control.If(V.Local.sBatch.Trim,<>,"")
+	
+	F.Intrinsic.String.Format(V.Screen.F_JE_Reversal!dtpPostDate.Value,"YYYYMMDD",V.Local.sDate)
+		
+	'Get the post date of the to be reversed batch
+	V.Local.datePost.Set(V.Screen.F_JE_Reversal!dtpPostDate.Value)
+	
+	F.Intrinsic.String.Concat("UPDATE GL_JOURNAL_DTL SET REVERSE_DATE = '",V.Local.sDate.Trim,"' WHERE BATCH = '",V.Local.sBatch.Trim,"' AND POST_DATE_sql = '",V.Local.datePost.PervasiveDate,"'",V.Local.sQuery)
+	F.ODBC.Connection!conx.Execute(V.Local.sQuery)
+	
+	V.Local.sFile.Set("")
+	V.Local.sUser.Set(V.Caller.User)
+	F.Intrinsic.String.Format(V.Screen.F_JE_Reversal!dtpPostDate.Value,"MM",V.Local.sMonth)
+	F.Intrinsic.String.Format(V.Screen.F_JE_Reversal!dtpPostDate.Value,"YY",V.Local.sYear)
+	
+	F.Intrinsic.Control.If(V.Local.sSelection.Trim,=,"Reversal")
+		F.Intrinsic.String.RPad(V.uGlobal.uBatch(V.Local.i1)!JE_DESC.Trim," ",30,V.Local.sDesc)
+	F.Intrinsic.Control.ElseIf(V.Local.sSelection.Trim,=,"Correction")
+		F.Intrinsic.String.Concat("CORRECTION TO BATCH ",V.Local.sBatch.Trim,V.Local.sDesc)
+		F.Intrinsic.String.RPad(V.Local.sDesc," ",30,V.Local.sDesc)
+	F.Intrinsic.Control.Else
+		V.Local.sRemark.Set(V.Screen.F_JE_Reversal!txt_Remark.Text)
+		F.Intrinsic.Control.If(V.Local.sRemark.Trim,=,"")
+			V.Local.sRemark.Set("REVERSAL FOR MISC REASON")
+		F.Intrinsic.Control.EndIf
+		F.Intrinsic.String.RPad(V.Local.sRemark," ",30,V.Local.sDesc)
+	F.Intrinsic.Control.EndIf
+		
+	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtBatch.RowCount--,1)
+		F.Intrinsic.String.RPad(V.DataTable.dtBatch(V.Local.i1).GLAccount!FieldVal," ",15,V.Local.sFileRow)
+		
+		F.Intrinsic.Math.Mult(-1,V.DataTable.dtBatch(V.Local.i1).Amount!FieldVal,V.Local.fAmt)
+		F.Intrinsic.String.LPad(V.Local.fAmt," ",12,V.Local.sField)
+		F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sField,V.Local.sFileRow)
+		
+		F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.DataTable.dtBatch(V.Local.i1).JEDesc!FieldVal,V.Local.sFileRow)
+		
+		F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sYear.Trim,",",V.Local.sMonth.Trim,V.Local.sFileRow)
+		
+		F.Intrinsic.String.RPad(V.Local.sBatch.Trim," ",7,V.Local.sField)
+		F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sField,V.Local.sFileRow)
+		
+		F.Intrinsic.String.Concat("REVERSAL ",V.Local.sBatch.Trim,V.Local.sField)
+		F.Intrinsic.String.RPad(V.Local.sField," ",15,V.Local.sField)
+		F.Intrinsic.String.Concat(V.Local.sFileRow,",",V.Local.sField,V.Local.sFileRow)
+		
+		F.Intrinsic.Control.If(V.Local.sFile.Trim,=,"")
+			V.Local.sFile.Set(V.Local.sFileRow)
+		F.Intrinsic.Control.Else
+			F.Intrinsic.String.Concat(V.Local.sFile,V.Ambient.NewLine,V.Local.sFileRow,V.Local.sFile)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Next(V.Local.i1)
+	
+	'Save the file to GLtttccc located in FILES folder
+	F.Intrinsic.String.Concat(V.Caller.FilesDir,"\GL",V.Caller.Terminal,V.Caller.CompanyCode,"1234",V.Local.sFileName)
+	F.Intrinsic.File.String2File(V.Local.sFileName,V.Local.sFile)
+	
+	'Preparing the program parameter and run XGL004
+	F.Intrinsic.String.RPad(V.Caller.User," ",8,V.Local.sUser)
+	F.Intrinsic.String.Concat("GL",V.Caller.Terminal,V.Caller.CompanyCode,"1234",V.Local.sParam)
+	F.Intrinsic.String.RPad(V.Local.sParam," ",12,V.Local.sParam)
+	F.Intrinsic.String.Concat(V.Ambient.QuadQuote,V.Caller.CompanyCode,V.Local.sParam,V.Local.sUser.UCase,V.Ambient.QuadQuote,V.Local.sParam)
+	F.Intrinsic.Task.LaunchGSSSync("XGL004","-C",V.Local.sParam)
+	
+'	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtBatch.RowCount--,1)
+'		F.Intrinsic.Control.If(V.uGlobal.uBatch(V.Local.i1)!EXCH_CURR.Trim,<>,"")
+'			F.Intrinsic.Math.Mult(-1,V.uGlobal.uBatch(V.Local.i1)!AMOUNT,V.Local.fAmt)
+'			
+'			F.Intrinsic.String.Concat("UPDATE GL_JRNL_ENTRY SET EXCH_CURR = '",V.uGlobal.uBatch(V.Local.i1)!EXCH_CURR.Trim,"', EXCH_DATE = '",V.uGlobal.uBatch(V.Local.i1)!EXCH_DATE.Trim,"'",V.Local.sQuery)
+'			F.Intrinsic.String.Concat(V.Local.sQuery,", EXCH_RATE = ",V.uGlobal.uBatch(V.Local.i1)!EXCH_RATE,", EXCH_AMT = ",V.Local.fAmt," WHERE USERID = '",V.Local.sUser.Trim,"' AND LINE = '",V.uGlobal.uBatch(V.Local.i1)!LINE.Trim,"'",V.Local.sQuery)
+'			F.Intrinsic.String.Concat(V.Local.sQuery," AND ACCOUNT = '",V.uGlobal.uBatch(V.Local.i1)!GL_ACCOUNT.Trim,"' AND DESCR = '",V.Local.sDesc.Trim,"'",V.Local.sQuery)
+'			F.ODBC.Connection!conx.Execute(V.Local.sQuery)
+
+'		F.Intrinsic.Control.EndIf
+'	F.Intrinsic.Control.Next(V.Local.i1)
+'	f.Intrinsic.Debug.ShowCallerInfo
+	F.Intrinsic.String.Format(V.Ambient.Date,"YYYYMMDD",V.Local.sDate)
+'	F.Intrinsic.String.Concat("SELECT BATCH FROM GL_JRNL_ENTRY WHERE USERID = '",V.Local.sUser.Trim,"' AND ACCOUNT = '",V.DataTable.dtBatch(0).GLAccount!FieldValTrim,"' AND DESCR = '",V.Local.sDesc.Trim,"' AND P_DATE = '",V.Local.sDate.Trim,"'",V.Local.sQuery)
+	F.Intrinsic.String.Concat("SELECT BATCH FROM GL_JRNL_ENTRY WHERE USERID = '",V.Local.sUser.Trim,"' AND ACCOUNT = '",V.DataTable.dtBatch(0).GLAccount!FieldValTrim,"' AND DESCR = '",V.DataTable.dtBatch(0).JEDesc!FieldValTrim,"' AND P_DATE = '",V.Local.sDate.Trim,"'",V.Local.sQuery)
+	F.Intrinsic.String.Concat(V.Local.sQuery," AND LAST_CHG_PGM = 'XGL004'",V.Local.sQuery)
+	F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sQuery)
+	V.Local.sBatch.Set(V.ODBC.conx!rst.FieldValTrim!BATCH)
+	F.ODBC.conx!rst.Close
+	
+	'Changing transaction date
+	F.Intrinsic.String.Format(V.Screen.F_JE_Reversal!dtpPostDate.Value,"YYYYMMDD",V.Local.sDate)
+	F.Intrinsic.String.Concat("UPDATE GL_JRNL_ENTRY SET P_DATE = '",V.Local.sDate.Trim,"' WHERE BATCH = '",V.Local.sBatch.Trim,"'",V.Local.sQuery)
+	F.ODBC.Connection!conx.Execute(V.Local.sQuery)
+	
+	F.Intrinsic.String.Concat("Batch No. ",V.Local.sBatch.Trim," has been created and is ready for posting",V.Local.sMessage)
+	F.Intrinsic.UI.Msgbox(V.Local.sMessage,"NOTIFICATION")
+	
+	'Reset the screen
+	Gui.F_JE_Reversal.txt_BatchNo.Text("")
+	Gui.F_JE_Reversal.txt_BatchRef.Text("")
+	Gui.F_JE_Reversal.dtpOPostDate.Value(V.Ambient.Date)
+	Gui.F_JE_Reversal.dlst_remark.Text("Reversal")
+	F.Intrinsic.Control.For(V.Local.i1,V.DataTable.dtBatch.RowCount--,0,-1)
+		F.Data.DataTable.DeleteRow("dtBatch",V.Local.i1)
+	F.Intrinsic.Control.Next(V.Local.i1)
+	F.Data.DataTable.AcceptChanges("dtBatch")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.Label("cmd_process_click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GAB_MANUAL_JE_REVERSAL.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.cmd_process_click.End
+
+Program.Sub.dlst_remark_click.Start
+F.Intrinsic.Control.SetErrorHandler("dlst_remark_click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+V.Local.sSelection.Declare(String)
+
+V.Local.sSelection.Set(V.Screen.F_JE_Reversal!dlst_remark.Text)
+
+F.Intrinsic.Control.If(V.Local.sSelection.Trim,=,"Other")
+	Gui.F_JE_Reversal.lbl6.Visible(True)
+	Gui.F_JE_Reversal.txt_Remark.Visible(True)
+F.Intrinsic.Control.Else
+	Gui.F_JE_Reversal.txt_Remark.Text("")
+	Gui.F_JE_Reversal.lbl6.Visible(False)
+	Gui.F_JE_Reversal.txt_Remark.Visible(False)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.Label("dlst_remark_click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GAB_MANUAL_JE_REVERSAL.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.dlst_remark_click.End
+
+Program.Sub.Comments.Start
+${$5$}$2.0.0.0$}$2
+${$6$}$dyunus$}$20200525135937200$}$xZ6SHi8g7O0Qsxe6AiO2NH3PnOKQRy0Tf0WxUhZrrzq61Rz+0dVPC3BDUDRz84sab/WMQCk25ks=
+Program.Sub.Comments.End
+
